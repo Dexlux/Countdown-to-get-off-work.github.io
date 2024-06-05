@@ -60,6 +60,25 @@
             position: absolute;
             top: 50px;
             right: 30px;
+            color: floralwhite;
+        }
+
+        #countdown {
+            position: relative;
+        }
+
+        #countdown #tooltiptext{
+            visibility: hidden;
+            background-color: rgba(0, 0, 0, 0.4);
+            color: floralwhite;
+            border-radius: 6px;
+            padding: 10px 20px;
+            position: absolute;
+            z-index: 1;
+        }
+
+        #countdown:hover #tooltiptext {
+            visibility: visible;
         }
 
         .emoji {
@@ -88,6 +107,7 @@
 
         span,li,h1{
             color: floralwhite;
+            font-variant-numeric: tabular-nums;
         }
     </style>
 
@@ -95,7 +115,7 @@
 
 <body>
     <div class="container">
-        <span id="hitokoto"></span>
+        <div id="hitokoto"></div>
         <h1 id="headline"></h1>
         <div id="countdown">
             <ul>
@@ -104,6 +124,9 @@
                 <li><span id="minutes"></span>分钟</li>
                 <li><span id="seconds"></span>秒</li>
             </ul>
+            <div id="tooltiptext">
+               纯爱战士
+            </div>
         </div>
     </div>
 </body>
@@ -121,16 +144,20 @@
     setInterval(function () {
         updateTime()
     }, 1000)
-    fetchHitokoto()
+    fetchText()
     setInterval(function () {
-        fetchHitokoto()
+        fetchText()
     }, 60000)
 
-    async function fetchHitokoto() {
-        const response = await fetch('https://v1.hitokoto.cn')
-        const { uuid, hitokoto: hitokotoText, from, from_who } = await response.json()
+    async function fetchText() {
+        const yiyan = await fetch('https://v1.hitokoto.cn') // 一言
+        const dogTalk = await fetch('https://v2.api-m.com/api/dog') // 舔狗
+        const { uuid, hitokoto: hitokotoText, from, from_who } = await yiyan.json()
+        const { data: dogTalkSay } = await dogTalk.json()
         const hitokoto = document.querySelector('#hitokoto')
-        hitokoto.innerText = hitokotoText + (from_who ? ` - ${from_who}《${from}》` : ` -《${from}》`)
+        hitokoto.innerText = hitokotoText + (from_who && from ? ` - ${from_who}《${from}》` : from_who ? ` - ${from_who}` : ` -《${from}》`)
+        const tooltiptext = document.querySelector('#tooltiptext')
+        tooltiptext.innerText = dogTalkSay
     }
 
     function starter() {
