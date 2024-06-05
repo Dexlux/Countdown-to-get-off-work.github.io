@@ -7,7 +7,6 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <link rel='stylesheet' href='https://fonts.googleapis.cn/css?family=Montserrat:400,700'>
     <style>
-        /* general styling */
         :root {
             --smaller: .75;
         }
@@ -77,17 +76,21 @@
         }
 
         #countdown #tooltiptext{
-            visibility: hidden;
+            opacity: 0;
+            width: 90%;
             background-color: rgba(0, 0, 0, 0.4);
             color: floralwhite;
             border-radius: 6px;
             padding: 10px 20px;
             position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
             z-index: 1;
+            transition: all 0.5s;
         }
 
         #countdown:hover #tooltiptext {
-            visibility: visible;
+            opacity: 1;
         }
 
         .emoji {
@@ -146,74 +149,117 @@
     let holiday
     let targetTime
     let nextWorkDate
-    let middleTime
-    getNextWorkTime()
+    let isTodayWorkDay = isWorkDay(new Date())
+    // 午休文案
+    const lunch_break_text = [
+        "离中午吃饭还有这么一会儿～",
+        "午休时间马上到啦，耐心点哦！",
+        "中午下班倒计时开始啦！",
+        "午餐时间快要到了，准备好胃了吗？",
+        "距离中午放风时间还剩下不多啦！",
+        "午饭时间呼唤你！还有这么一会儿！",
+        "距离中午解放时间只有这么多了～"
+    ]
+    // 下班文案
+    const get_off_work_text = [
+        "别急，下班还有一会儿呢，慢慢来。",
+        "放心，还有些时间，可以先休息一下。",
+        "还有一段时间才到下班，继续努力！",
+        "别着急，下班的时间还有点儿。",
+        "离下班还有一段时间，可以安排一下晚上的活动。",
+        "不要急，下班还有点儿时间，可以喝杯茶放松一下。",
+        "放轻松，还有一段时间才到下班。",
+        "离下班还有一段时间，先完成手头工作吧！",
+        "下班的钟声近在眼前，加油！",
+        "快到下班时间啦，挺住！",
+        "下班的时光即将到来，想好今晚吃什么了吗？",
+        "还有一会儿就可以放风啦，开心一下！",
+        "离解放还有点时间，继续努力！",
+    ]
+    // 下班后文案
+    const get_off_work_late_text = [
+        "sweetheart，别卷了，再不走就距离下次上班还有",
+        "亲爱的，放下工作吧，再不走就距离下次上班还有",
+        "别再忙了，亲爱的，再不走就距离下次上班还有",
+        "工作够了，亲爱的，再不走就距离下次上班还有",
+        "亲爱的，别再加班了，再不走就距离下次上班还有",
+        "放松一下，亲爱的，再不走就距离下次上班还有",
+        "亲爱的，别再拼了，再不走就距离下次上班还有",
+        "停下来吧，亲爱的，再不走就距离下次上班还有",
+        "亲爱的，够了，再不走就距离下次上班还有",
+        "休息一下吧，亲爱的，再不走就距离下次上班还有",
+        "亲爱的，停一停，再不走就距离下次上班还有"
+    ]
+    // 上班时间
+    const startTime = new Date()
+    startTime.setHours(8)
+    startTime.setMinutes(30)
+    startTime.setSeconds(0)
+
+    // 午休时间
+    const middleTime = new Date()
+    middleTime.setHours(12)
+    middleTime.setMinutes(0)
+    middleTime.setSeconds(0)
+
+    // 下班时间
+    const endTime = new Date()
+    endTime.setHours(17)
+    endTime.setMinutes(30)
+    endTime.setSeconds(0)
+
+    // 初始化
     starter()
-    updateTime()
+
+    // 每秒执行的任务
     setInterval(function () {
         updateTime()
     }, 1000)
-    fetchText()
+
+    // 每分钟执行的任务
     setInterval(function () {
         fetchText()
+        updateText()
     }, 60000)
-
-    async function fetchText() {
-        const yiyan = await fetch('https://v1.hitokoto.cn') // 一言
-        const dogTalk = await fetch('https://v2.api-m.com/api/dog') // 舔狗
-        const { uuid, hitokoto: hitokotoText, from, from_who } = await yiyan.json()
-        const { data: dogTalkSay } = await dogTalk.json()
-        const hitokoto = document.querySelector('#hitokoto')
-        hitokoto.innerText = hitokotoText + (from_who && from ? ` - ${from_who}《${from}》` : from_who ? ` - ${from_who}` : ` -《${from}》`)
-        const tooltiptext = document.querySelector('#tooltiptext')
-        tooltiptext.innerText = dogTalkSay
-    }
-
+    
     function starter() {
-        if (isWorkDay(new Date())) {
-            middleTime = new Date()
-            middleTime.setHours(12)
-            middleTime.setMinutes(0)
-            middleTime.setSeconds(0)
-
-            startTime = new Date()
-            startTime.setHours(8)
-            startTime.setMinutes(30)
-            startTime.setSeconds(0)
-
-            endTime = new Date()
-            endTime.setHours(17)
-            endTime.setMinutes(30)
-            endTime.setSeconds(0)
-
-            nowTime = new Date()
-
-            if (startTime <= nowTime && endTime >= nowTime) {
-                let time = ''
-                if(nowTime < middleTime) {
-                    time = '中午'
-                    targetTime = middleTime
-                } else {
-                    time = '终极'
-                    targetTime = endTime
-                }
-                document.getElementById("headline").innerText = `距离${time}下班还有`
-            } else {
-                document.getElementById("headline").innerText = "sweetheart，别卷了，再不走就距离下次上班还有"
-                targetTime = nextWorkDate
-                targetTime.setHours(8)
-                targetTime.setMinutes(30)
-                targetTime.setSeconds(0)
-            }
-        } else {
-            document.getElementById("headline").innerText = "现在是" + holiday + "，距离下次上班还有"
-            targetTime = nextWorkDate
-            targetTime.setHours(8)
-            targetTime.setMinutes(30)
-            targetTime.setSeconds(0)
-        }
-
+        getNextWorkTime()
+        fetchText() 
+        updateText()
+        updateTime()
     }
+
+    // 获取一言和舔狗文案
+    async function fetchText() {
+        const hitokoto = document.querySelector('#hitokoto');
+        const tooltiptext = document.querySelector('#tooltiptext');
+        try {
+            const [yiyanResponse, dogTalkResponse] = await Promise.allSettled([
+                fetch('https://v1.hitokoto.cn'), // 一言
+                fetch('https://v2.api-m.com/api/dog') // 舔狗
+            ]);
+
+            const yiyanData = yiyanResponse.status === 'fulfilled' ? await yiyanResponse.value.json() : null;
+            const dogTalkData = dogTalkResponse.status === 'fulfilled' ? await dogTalkResponse.value.json() : null;
+
+            if (yiyanData) {
+                const { uuid, hitokoto: hitokotoText, from, from_who } = yiyanData;
+                hitokoto.innerText = hitokotoText + (from_who && from ? ` - ${from_who}《${from}》` : from_who ? ` - ${from_who}` : ` -《${from}》`);
+            }
+
+            if (dogTalkData) {
+                const { data: dogTalkSay } = dogTalkData;
+                tooltiptext.innerText = dogTalkSay;
+            } else {
+                tooltiptext.style.display = 'none'
+            }
+        } catch (error) {
+            console.log(error);
+            tooltiptext.style.display = 'none'
+        }
+}
+
+
 
     function isWorkDay(now) {
         now.setHours(0)
@@ -306,6 +352,40 @@
         return (num / Math.pow(10, length)).toFixed(length).substr(2);
     }
 
+    function getRandomItemFromArray(arr) {
+        return arr[Math.floor(Math.random() * arr.length)];
+    }
+
+    // 更新提示文案及结束时间
+    function updateText() {
+        nowTime = new Date()
+        let text
+        if (isTodayWorkDay) {
+            if (startTime <= nowTime && endTime >= nowTime) {
+                if(nowTime < middleTime) {
+                    text = getRandomItemFromArray(lunch_break_text)
+                    targetTime = middleTime
+                } else {
+                    text = getRandomItemFromArray(get_off_work_text)
+                    targetTime = endTime
+                }
+            } else {
+                text = getRandomItemFromArray(get_off_work_late_text)
+                targetTime = nextWorkDate
+                targetTime.setHours(8)
+                targetTime.setMinutes(30)
+                targetTime.setSeconds(0)
+            }
+            document.getElementById("headline").innerText = text
+        } else {
+            document.getElementById("headline").innerText = "现在是" + holiday + "，距离下次上班还有"
+            targetTime = nextWorkDate
+            targetTime.setHours(8)
+            targetTime.setMinutes(30)
+            targetTime.setSeconds(0)
+        }
+    }
+    
     function updateTime() {
         nowTime = new Date()
         let offsetTime = targetTime.getTime() - nowTime.getTime()
@@ -314,9 +394,9 @@
         let hours = parseInt(offsetTime % (24 * 60 * 60) / (60 * 60))
         let minutes = parseInt(offsetTime % (60 * 60) / 60)
         let seconds = offsetTime % 60
-        if (days === 0 && hours === 0 && minutes === 0 && seconds === 0) {
+        if (offsetTime <= 0) {
             getNextWorkTime()
-            starter()
+            updateText()
         }
         document.getElementById('days').innerText = PrefixInteger(days, 2)
         document.getElementById('hours').innerText = PrefixInteger(hours, 2)
