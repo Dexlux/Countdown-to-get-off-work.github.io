@@ -240,9 +240,9 @@
                 fetch('https://v2.api-m.com/api/dog') // 舔狗
             ]);
 
-            const yiyanData = yiyanResponse.status === 'fulfilled' ? await yiyanResponse.value.json() : null;
-            const dogTalkData = dogTalkResponse.status === 'fulfilled' ? await dogTalkResponse.value.json() : null;
-
+            const yiyanData = yiyanResponse.value.ok ? await yiyanResponse.value.json() : null;
+            const dogTalkData = dogTalkResponse.value.ok ? await dogTalkResponse.value.json() : null;
+            
             if (yiyanData) {
                 const { uuid, hitokoto: hitokotoText, from, from_who } = yiyanData;
                 hitokoto.innerText = hitokotoText + (from_who && from ? ` - ${from_who}《${from}》` : from_who ? ` - ${from_who}` : ` -《${from}》`);
@@ -258,9 +258,7 @@
             console.log(error);
             tooltiptext.style.display = 'none'
         }
-}
-
-
+  }
 
     function isWorkDay(now) {
         now.setHours(0)
