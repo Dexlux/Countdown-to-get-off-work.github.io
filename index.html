@@ -1,412 +1,413 @@
-
 <!DOCTYPE html>
 <html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
-    <title>下班倒计时</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <link rel='stylesheet' href='https://fonts.googleapis.cn/css?family=Montserrat:400,700'>
-    <style>
-        :root {
-            --smaller: .75;
-        }
+	<head>
+		<meta charset="UTF-8" />
+		<title>下班倒计时</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<link rel="stylesheet" href="https://fonts.googleapis.cn/css?family=Montserrat:400,700" />
+		<style>
+			:root {
+				--smaller: 0.75;
+			}
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+			* {
+				box-sizing: border-box;
+				margin: 0;
+				padding: 0;
+			}
 
-        html,
-        body {
-            height: 100%;
-            margin: 0;
-        }
+			html,
+			body {
+				height: 100%;
+				margin: 0;
+			}
 
-        body {
-            align-items: center;
-            background-image: linear-gradient(45deg, #476bd6  0, #FFC0CB 50%, #ffec00 100%);
-            /* background-image: linear-gradient(45deg, #476bd6  0,  #FFC0CB 100%); */
-            background-size: 400%;
-            background-position: 0 100%;
-            animation: gradient 15s ease-in-out infinite;
-            display: flex;
-            font-family: "Montserrat", "sans-serif";
-        }
+			body {
+				align-items: center;
+				background-image: linear-gradient(45deg, #476bd6 0, #ffc0cb 50%, #ffec00 100%);
+				/* background-image: linear-gradient(45deg, #476bd6  0,  #FFC0CB 100%); */
+				background-size: 400%;
+				background-position: 0 100%;
+				animation: gradient 15s ease-in-out infinite;
+				display: flex;
+				font-family: 'Montserrat', 'sans-serif';
+			}
 
-        @keyframes gradient {
-            50% {
-                background-position: 100% 0;
-            }
-        }
+			@keyframes gradient {
+				50% {
+					background-position: 100% 0;
+				}
+			}
 
-        .container {
-            color: #333;
-            margin: 0 auto;
-            text-align: center;
-        }
+			.container {
+				color: #333;
+				margin: 0 auto;
+				text-align: center;
+			}
 
-        h1 {
-            font-weight: normal;
-            letter-spacing: .25rem;
-            text-transform: uppercase;
-        }
+			h1 {
+				font-weight: normal;
+				letter-spacing: 0.25rem;
+				text-transform: uppercase;
+			}
 
-        li {
-            display: inline-block;
-            font-size: 2em;
-            list-style-type: none;
-            padding: 1em;
-            text-transform: uppercase;
-        }
+			li {
+				display: inline-block;
+				font-size: 2em;
+				list-style-type: none;
+				padding: 1em;
+				text-transform: uppercase;
+			}
 
-        li span {
-            display: block;
-            font-size: 6rem;
-        }
+			li span {
+				display: block;
+				font-size: 6rem;
+			}
 
-        #hitokoto {
-            position: absolute;
-            top: 50px;
-            right: 30px;
-            color: floralwhite;
-        }
+			#hitokoto {
+				position: absolute;
+				top: 50px;
+				right: 30px;
+				color: floralwhite;
+			}
 
-        #countdown {
-            position: relative;
-        }
+			#countdown {
+				position: relative;
+			}
 
-        #countdown #tooltiptext{
-            opacity: 0;
-            width: 90%;
-            background-color: rgba(0, 0, 0, 0.4);
-            color: floralwhite;
-            border-radius: 6px;
-            padding: 10px 20px;
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 1;
-            transition: all 0.5s;
-        }
+			#countdown #tooltiptext {
+				opacity: 0;
+				width: 90%;
+				background-color: rgba(0, 0, 0, 0.4);
+				color: floralwhite;
+				border-radius: 6px;
+				padding: 10px 20px;
+				position: absolute;
+				left: 50%;
+				transform: translateX(-50%);
+				z-index: 1;
+				transition: all 0.5s;
+			}
 
-        #countdown:hover #tooltiptext {
-            opacity: 1;
-        }
+			#countdown:hover #tooltiptext {
+				opacity: 1;
+			}
 
-        .emoji {
-            display: none;
-            padding: 1rem;
-        }
+			.emoji {
+				display: none;
+				padding: 1rem;
+			}
 
-        .emoji span {
-            font-size: 4rem;
-            padding: 0 .5rem;
-        }
+			.emoji span {
+				font-size: 4rem;
+				padding: 0 0.5rem;
+			}
 
-        @media all and (max-width: 768px) {
-            h1 {
-                font-size: calc(1.5rem * var(--smaller));
-            }
+			@media all and (max-width: 768px) {
+				h1 {
+					font-size: calc(1.5rem * var(--smaller));
+				}
 
-            li {
-                font-size: calc(1.125rem * var(--smaller));
-            }
+				li {
+					font-size: calc(1.125rem * var(--smaller));
+				}
 
-            li span {
-                font-size: calc(3.375rem * var(--smaller));
-            }
-        }
+				li span {
+					font-size: calc(3.375rem * var(--smaller));
+				}
+			}
 
-        span,li,h1{
-            color: floralwhite;
-            font-variant-numeric: tabular-nums;
-        }
-    </style>
+			span,
+			li,
+			h1 {
+				color: floralwhite;
+				font-variant-numeric: tabular-nums;
+			}
+		</style>
+	</head>
 
-</head>
+	<body>
+		<div class="container">
+			<div id="hitokoto"></div>
+			<h1 id="headline"></h1>
+			<div id="countdown">
+				<ul>
+					<li><span id="days"></span>天</li>
+					<li><span id="hours"></span>小时</li>
+					<li><span id="minutes"></span>分钟</li>
+					<li><span id="seconds"></span>秒</li>
+				</ul>
+				<div id="tooltiptext">纯爱战士</div>
+			</div>
+		</div>
+	</body>
 
-<body>
-    <div class="container">
-        <div id="hitokoto"></div>
-        <h1 id="headline"></h1>
-        <div id="countdown">
-            <ul>
-                <li><span id="days"></span>天</li>
-                <li><span id="hours"></span>小时</li>
-                <li><span id="minutes"></span>分钟</li>
-                <li><span id="seconds"></span>秒</li>
-            </ul>
-            <div id="tooltiptext">
-               纯爱战士
-            </div>
-        </div>
-    </div>
-</body>
+	<script>
+		// 彩蛋 跳到故障风格倒计时
+		document.getElementById('headline').addEventListener('click', () => {
+			window.location.href = './glitch_index.html'
+		})
 
+		let holiday
+		let targetTime
+		let nextWorkDate
 
-<script>
+		// 午休文案
+		const lunch_break_text = [
+			'离中午吃饭还有这么一会儿～',
+			'午休时间马上到啦，耐心点哦！',
+			'中午下班倒计时开始啦！',
+			'午餐时间快要到了，准备好胃了吗？',
+			'距离中午放风时间还剩下不多啦！',
+			'午饭时间呼唤你！还有这么一会儿！',
+			'距离中午解放时间只有这么多了～'
+		]
+		// 下班文案
+		const get_off_work_text = [
+			'别急，下班还有一会儿呢，慢慢来。',
+			'放心，还有些时间，可以先休息一下。',
+			'还有一段时间才到下班，继续努力！',
+			'别着急，下班的时间还有点儿。',
+			'离下班还有一段时间，可以安排一下晚上的活动。',
+			'不要急，下班还有点儿时间，可以喝杯茶放松一下。',
+			'放轻松，还有一段时间才到下班。',
+			'离下班还有一段时间，先完成手头工作吧！',
+			'下班的钟声近在眼前，加油！',
+			'快到下班时间啦，挺住！',
+			'下班的时光即将到来，想好今晚吃什么了吗？',
+			'还有一会儿就可以放风啦，开心一下！',
+			'离解放还有点时间，继续努力！'
+		]
+		// 下班后文案
+		const get_off_work_late_text = [
+			'sweetheart，别卷了，再不走就距离下次上班还有',
+			'亲爱的，放下工作吧，再不走就距离下次上班还有',
+			'别再忙了，亲爱的，再不走就距离下次上班还有',
+			'工作够了，亲爱的，再不走就距离下次上班还有',
+			'亲爱的，别再加班了，再不走就距离下次上班还有',
+			'放松一下，亲爱的，再不走就距离下次上班还有',
+			'亲爱的，别再拼了，再不走就距离下次上班还有',
+			'停下来吧，亲爱的，再不走就距离下次上班还有',
+			'亲爱的，够了，再不走就距离下次上班还有',
+			'休息一下吧，亲爱的，再不走就距离下次上班还有',
+			'亲爱的，停一停，再不走就距离下次上班还有'
+		]
+		// 上班时间
+		const startTime = new Date()
+		startTime.setHours(8)
+		startTime.setMinutes(30)
+		startTime.setSeconds(0)
 
-    let holiday
-    let targetTime
-    let nextWorkDate
-    let isTodayWorkDay = isWorkDay(new Date())
-    // 午休文案
-    const lunch_break_text = [
-        "离中午吃饭还有这么一会儿～",
-        "午休时间马上到啦，耐心点哦！",
-        "中午下班倒计时开始啦！",
-        "午餐时间快要到了，准备好胃了吗？",
-        "距离中午放风时间还剩下不多啦！",
-        "午饭时间呼唤你！还有这么一会儿！",
-        "距离中午解放时间只有这么多了～"
-    ]
-    // 下班文案
-    const get_off_work_text = [
-        "别急，下班还有一会儿呢，慢慢来。",
-        "放心，还有些时间，可以先休息一下。",
-        "还有一段时间才到下班，继续努力！",
-        "别着急，下班的时间还有点儿。",
-        "离下班还有一段时间，可以安排一下晚上的活动。",
-        "不要急，下班还有点儿时间，可以喝杯茶放松一下。",
-        "放轻松，还有一段时间才到下班。",
-        "离下班还有一段时间，先完成手头工作吧！",
-        "下班的钟声近在眼前，加油！",
-        "快到下班时间啦，挺住！",
-        "下班的时光即将到来，想好今晚吃什么了吗？",
-        "还有一会儿就可以放风啦，开心一下！",
-        "离解放还有点时间，继续努力！",
-    ]
-    // 下班后文案
-    const get_off_work_late_text = [
-        "sweetheart，别卷了，再不走就距离下次上班还有",
-        "亲爱的，放下工作吧，再不走就距离下次上班还有",
-        "别再忙了，亲爱的，再不走就距离下次上班还有",
-        "工作够了，亲爱的，再不走就距离下次上班还有",
-        "亲爱的，别再加班了，再不走就距离下次上班还有",
-        "放松一下，亲爱的，再不走就距离下次上班还有",
-        "亲爱的，别再拼了，再不走就距离下次上班还有",
-        "停下来吧，亲爱的，再不走就距离下次上班还有",
-        "亲爱的，够了，再不走就距离下次上班还有",
-        "休息一下吧，亲爱的，再不走就距离下次上班还有",
-        "亲爱的，停一停，再不走就距离下次上班还有"
-    ]
-    // 上班时间
-    const startTime = new Date()
-    startTime.setHours(8)
-    startTime.setMinutes(30)
-    startTime.setSeconds(0)
+		// 午休时间
+		const middleTime = new Date()
+		middleTime.setHours(12)
+		middleTime.setMinutes(0)
+		middleTime.setSeconds(0)
 
-    // 午休时间
-    const middleTime = new Date()
-    middleTime.setHours(12)
-    middleTime.setMinutes(0)
-    middleTime.setSeconds(0)
+		// 下班时间
+		const endTime = new Date()
+		endTime.setHours(17)
+		endTime.setMinutes(30)
+		endTime.setSeconds(0)
 
-    // 下班时间
-    const endTime = new Date()
-    endTime.setHours(17)
-    endTime.setMinutes(30)
-    endTime.setSeconds(0)
+		// 初始化
+		starter()
 
-    // 初始化
-    starter()
+		// 每秒执行的任务
+		setInterval(function () {
+			updateTime()
+		}, 1000)
 
-    // 每秒执行的任务
-    setInterval(function () {
-        updateTime()
-    }, 1000)
+		// 每分钟执行的任务
+		setInterval(function () {
+			fetchText()
+			updateText()
+		}, 60000)
 
-    // 每分钟执行的任务
-    setInterval(function () {
-        fetchText()
-        updateText()
-    }, 60000)
-    
-    function starter() {
-        getNextWorkTime()
-        fetchText() 
-        updateText()
-        updateTime()
-    }
+		function starter() {
+			getNextWorkTime()
+			fetchText()
+			updateText()
+			updateTime()
+		}
 
-    // 获取一言和舔狗文案
-    async function fetchText() {
-        const hitokoto = document.querySelector('#hitokoto');
-        const tooltiptext = document.querySelector('#tooltiptext');
-        try {
-            const [yiyanResponse, dogTalkResponse] = await Promise.allSettled([
-                fetch('https://v1.hitokoto.cn'), // 一言
-                fetch('https://v2.api-m.com/api/dog') // 舔狗
-            ]);
+		// 获取一言和舔狗文案
+		async function fetchText() {
+			const hitokoto = document.querySelector('#hitokoto')
+			const tooltiptext = document.querySelector('#tooltiptext')
+			try {
+				const [yiyanResponse, dogTalkResponse] = await Promise.allSettled([
+					fetch('https://v1.hitokoto.cn'), // 一言
+					fetch('https://v2.api-m.com/api/dog') // 舔狗
+				])
 
-            const yiyanData = yiyanResponse.value.ok ? await yiyanResponse.value.json() : null;
-            const dogTalkData = dogTalkResponse.value.ok ? await dogTalkResponse.value.json() : null;
-            
-            if (yiyanData) {
-                const { uuid, hitokoto: hitokotoText, from, from_who } = yiyanData;
-                hitokoto.innerText = hitokotoText + (from_who && from ? ` - ${from_who}《${from}》` : from_who ? ` - ${from_who}` : ` -《${from}》`);
-            }
+				const yiyanData = yiyanResponse.value.ok ? await yiyanResponse.value.json() : null
+				const dogTalkData = dogTalkResponse.value.ok ? await dogTalkResponse.value.json() : null
 
-            if (dogTalkData) {
-                const { data: dogTalkSay } = dogTalkData;
-                tooltiptext.innerText = dogTalkSay;
-            } else {
-                tooltiptext.style.display = 'none'
-            }
-        } catch (error) {
-            console.log(error);
-            tooltiptext.style.display = 'none'
-        }
-  }
+				if (yiyanData) {
+					const { uuid, hitokoto: hitokotoText, from, from_who } = yiyanData
+					hitokoto.innerText = hitokotoText + (from_who && from ? ` - ${from_who}《${from}》` : from_who ? ` - ${from_who}` : ` -《${from}》`)
+				}
 
-    function isWorkDay(now) {
-        now.setHours(0)
-        now.setMinutes(0)
-        now.setSeconds(0)
-        now.setMilliseconds(0)
-        let holidays = [
-            { "date": "2022-01-01 00:00:00", "name": "元旦" },
-            { "date": "2022-01-02 00:00:00", "name": "元旦" },
-            { "date": "2022-01-03 00:00:00", "name": "元旦" },
-            { "date": "2022-01-31 00:00:00", "name": "春节" },
-            { "date": "2022-02-01 00:00:00", "name": "春节" },
-            { "date": "2022-02-02 00:00:00", "name": "春节" },
-            { "date": "2022-02-03 00:00:00", "name": "春节" },
-            { "date": "2022-02-04 00:00:00", "name": "春节" },
-            { "date": "2022-02-05 00:00:00", "name": "春节" },
-            { "date": "2022-02-06 00:00:00", "name": "春节" },
-            { "date": "2022-04-03 00:00:00", "name": "清明节" },
-            { "date": "2022-04-05 00:00:00", "name": "清明节" },
-            { "date": "2022-04-06 00:00:00", "name": "清明节" },
-            { "date": "2022-04-30 00:00:00", "name": "劳动节" },
-            { "date": "2022-05-01 00:00:00", "name": "劳动节" },
-            { "date": "2022-05-02 00:00:00", "name": "劳动节" },
-            { "date": "2022-05-03 00:00:00", "name": "劳动节" },
-            { "date": "2022-05-04 00:00:00", "name": "劳动节" },
-            { "date": "2022-06-03 00:00:00", "name": "端午节" },
-            { "date": "2022-06-04 00:00:00", "name": "端午节" },
-            { "date": "2022-06-05 00:00:00", "name": "端午节" },
-            { "date": "2022-09-10 00:00:00", "name": "中秋节" },
-            { "date": "2022-09-11 00:00:00", "name": "中秋节" },
-            { "date": "2022-09-12 00:00:00", "name": "中秋节" },
-            { "date": "2022-10-01 00:00:00", "name": "国庆节" },
-            { "date": "2022-10-02 00:00:00", "name": "国庆节" },
-            { "date": "2022-10-03 00:00:00", "name": "国庆节" },
-            { "date": "2022-10-04 00:00:00", "name": "国庆节" },
-            { "date": "2022-10-05 00:00:00", "name": "国庆节" },
-            { "date": "2022-10-06 00:00:00", "name": "国庆节" },
-            { "date": "2022-10-07 00:00:00", "name": "国庆节" },
-        ]
+				if (dogTalkData) {
+					const { data: dogTalkSay } = dogTalkData
+					tooltiptext.innerText = dogTalkSay
+				} else {
+					tooltiptext.style.display = 'none'
+				}
+			} catch (error) {
+				console.log(error)
+				tooltiptext.style.display = 'none'
+			}
+		}
 
-        let holiday_work = [
-            { "date": "2022-01-29 00:00:00", "name": "春节调休" },
-            { "date": "2022-01-30 00:00:00", "name": "春节调休" },
-            { "date": "2022-04-01 00:00:00", "name": "清明节调休" },
-            { "date": "2022-04-24 00:00:00", "name": "劳动节调休" },
-            { "date": "2022-05-07 00:00:00", "name": "劳动节调休" },
-            { "date": "2022-10-08 00:00:00", "name": "国庆节调休" },
-            { "date": "2022-10-09 00:00:00", "name": "国庆节调休" },
-        ]
-        let flag = true
-        if (now.getDay() === 6) {
-            flag = false
-            holiday = '周六'
-        }
-        if (now.getDay() === 0) {
-            flag = false
-            holiday = '周日'
-        }
-        for (let hol in holidays) {
-            let temp = new Date(holidays[hol].date)
-            if (temp.getTime() === now.getTime()) {
-                flag = false
-                holiday = holidays[hol].name
-                break
-            }
-        }
-        for (let hol in holiday_work) {
-            let temp = new Date(holiday_work[hol].date)
-            if (temp.getTime() === now.getTime()) {
-                flag = true
-                holiday = holidays[hol].name
-                break
-            }
-        }
-        return flag
-    }
+		function isWorkDay(date) {
+			date.setHours(0)
+			date.setMinutes(0)
+			date.setSeconds(0)
+			date.setMilliseconds(0)
+			let holidays = [
+				{ date: '2022-01-01 00:00:00', name: '元旦' },
+				{ date: '2022-01-02 00:00:00', name: '元旦' },
+				{ date: '2022-01-03 00:00:00', name: '元旦' },
+				{ date: '2022-01-31 00:00:00', name: '春节' },
+				{ date: '2022-02-01 00:00:00', name: '春节' },
+				{ date: '2022-02-02 00:00:00', name: '春节' },
+				{ date: '2022-02-03 00:00:00', name: '春节' },
+				{ date: '2022-02-04 00:00:00', name: '春节' },
+				{ date: '2022-02-05 00:00:00', name: '春节' },
+				{ date: '2022-02-06 00:00:00', name: '春节' },
+				{ date: '2022-04-03 00:00:00', name: '清明节' },
+				{ date: '2022-04-05 00:00:00', name: '清明节' },
+				{ date: '2022-04-06 00:00:00', name: '清明节' },
+				{ date: '2022-04-30 00:00:00', name: '劳动节' },
+				{ date: '2022-05-01 00:00:00', name: '劳动节' },
+				{ date: '2022-05-02 00:00:00', name: '劳动节' },
+				{ date: '2022-05-03 00:00:00', name: '劳动节' },
+				{ date: '2022-05-04 00:00:00', name: '劳动节' },
+				{ date: '2022-06-03 00:00:00', name: '端午节' },
+				{ date: '2022-06-04 00:00:00', name: '端午节' },
+				{ date: '2022-06-05 00:00:00', name: '端午节' },
+				{ date: '2022-09-10 00:00:00', name: '中秋节' },
+				{ date: '2022-09-11 00:00:00', name: '中秋节' },
+				{ date: '2022-09-12 00:00:00', name: '中秋节' },
+				{ date: '2022-10-01 00:00:00', name: '国庆节' },
+				{ date: '2022-10-02 00:00:00', name: '国庆节' },
+				{ date: '2022-10-03 00:00:00', name: '国庆节' },
+				{ date: '2022-10-04 00:00:00', name: '国庆节' },
+				{ date: '2022-10-05 00:00:00', name: '国庆节' },
+				{ date: '2022-10-06 00:00:00', name: '国庆节' },
+				{ date: '2022-10-07 00:00:00', name: '国庆节' }
+			]
 
-    function getNextWorkTime() {
-        date = new Date()
-        for (let i = 0; i < 100; i++) {
-            date.setDate(date.getDate() + 1)
-            if (isWorkDay(date)) {
-                nextWorkDate = date
-                return
-            }
-        }
-    }
+			let holiday_work = [
+				{ date: '2022-01-29 00:00:00', name: '春节调休' },
+				{ date: '2022-01-30 00:00:00', name: '春节调休' },
+				{ date: '2022-04-01 00:00:00', name: '清明节调休' },
+				{ date: '2022-04-24 00:00:00', name: '劳动节调休' },
+				{ date: '2022-05-07 00:00:00', name: '劳动节调休' },
+				{ date: '2022-10-08 00:00:00', name: '国庆节调休' },
+				{ date: '2022-10-09 00:00:00', name: '国庆节调休' }
+			]
+			let flag = true
+			if (date.getDay() === 6) {
+				flag = false
+				holiday = '周六'
+			}
+			if (date.getDay() === 0) {
+				flag = false
+				holiday = '周日'
+			}
+			for (let hol in holidays) {
+				let temp = new Date(holidays[hol].date)
+				if (temp.getTime() === date.getTime()) {
+					flag = false
+					holiday = holidays[hol].name
+					break
+				}
+			}
+			for (let hol in holiday_work) {
+				let temp = new Date(holiday_work[hol].date)
+				if (temp.getTime() === date.getTime()) {
+					flag = true
+					holiday = holidays[hol].name
+					break
+				}
+			}
+			return flag
+		}
 
-    function PrefixInteger(num, length) {
-        return (num / Math.pow(10, length)).toFixed(length).substr(2);
-    }
+		function getNextWorkTime() {
+			date = new Date()
+			for (let i = 0; i < 100; i++) {
+				date.setDate(date.getDate() + 1)
+				if (isWorkDay(date)) {
+					nextWorkDate = date
+					return
+				}
+			}
+		}
 
-    function getRandomItemFromArray(arr) {
-        return arr[Math.floor(Math.random() * arr.length)];
-    }
+		function PrefixInteger(num, length) {
+			return (num / Math.pow(10, length)).toFixed(length).substr(2)
+		}
 
-    // 更新提示文案及结束时间
-    function updateText() {
-        nowTime = new Date()
-        let text
-        if (isTodayWorkDay) {
-            if (startTime <= nowTime && endTime >= nowTime) {
-                if(nowTime < middleTime) {
-                    text = getRandomItemFromArray(lunch_break_text)
-                    targetTime = middleTime
-                } else {
-                    text = getRandomItemFromArray(get_off_work_text)
-                    targetTime = endTime
-                }
-            } else {
-                text = getRandomItemFromArray(get_off_work_late_text)
-                targetTime = nextWorkDate
-                targetTime.setHours(8)
-                targetTime.setMinutes(30)
-                targetTime.setSeconds(0)
-            }
-            document.getElementById("headline").innerText = text
-        } else {
-            document.getElementById("headline").innerText = "现在是" + holiday + "，距离下次上班还有"
-            targetTime = nextWorkDate
-            targetTime.setHours(8)
-            targetTime.setMinutes(30)
-            targetTime.setSeconds(0)
-        }
-    }
-    
-    function updateTime() {
-        nowTime = new Date()
-        let offsetTime = targetTime.getTime() - nowTime.getTime()
-        offsetTime = parseInt(offsetTime / 1000)
-        let days = parseInt(offsetTime / (24 * 60 * 60))
-        let hours = parseInt(offsetTime % (24 * 60 * 60) / (60 * 60))
-        let minutes = parseInt(offsetTime % (60 * 60) / 60)
-        let seconds = offsetTime % 60
-        if (offsetTime <= 0) {
-            getNextWorkTime()
-            updateText()
-        }
-        document.getElementById('days').innerText = PrefixInteger(days, 2)
-        document.getElementById('hours').innerText = PrefixInteger(hours, 2)
-        document.getElementById('minutes').innerText = PrefixInteger(minutes, 2)
-        document.getElementById('seconds').innerText = PrefixInteger(seconds, 2)
-    }
-</script>
+		function getRandomItemFromArray(arr) {
+			return arr[Math.floor(Math.random() * arr.length)]
+		}
 
-<!-- 樱花飘落背景 -->
-<script src="./js/Sakura.js"></script>
+		// 更新提示文案及结束时间
+		function updateText() {
+			nowTime = new Date()
+			let text
+			if (isWorkDay(nowTime)) {
+				if (startTime <= nowTime && endTime >= nowTime) {
+					if (nowTime < middleTime) {
+						text = getRandomItemFromArray(lunch_break_text)
+						targetTime = middleTime
+					} else {
+						text = getRandomItemFromArray(get_off_work_text)
+						targetTime = endTime
+					}
+				} else {
+					text = getRandomItemFromArray(get_off_work_late_text)
+					targetTime = nextWorkDate
+					targetTime.setHours(8)
+					targetTime.setMinutes(30)
+					targetTime.setSeconds(0)
+				}
+				document.getElementById('headline').innerText = text
+			} else {
+				document.getElementById('headline').innerText = '现在是' + holiday + '，距离下次上班还有'
+				targetTime = nextWorkDate
+				targetTime.setHours(8)
+				targetTime.setMinutes(30)
+				targetTime.setSeconds(0)
+			}
+		}
 
-<!-- 鼠标点击出现烟花波纹 -->
-<script src="./js/clickEffect.js"></script>
+		function updateTime() {
+			nowTime = new Date()
+			let offsetTime = targetTime.getTime() - nowTime.getTime()
+			offsetTime = parseInt(offsetTime / 1000)
+			let days = parseInt(offsetTime / (24 * 60 * 60))
+			let hours = parseInt((offsetTime % (24 * 60 * 60)) / (60 * 60))
+			let minutes = parseInt((offsetTime % (60 * 60)) / 60)
+			let seconds = offsetTime % 60
+			if (offsetTime <= 0) {
+				getNextWorkTime()
+				updateText()
+			}
+			document.getElementById('days').innerText = PrefixInteger(days, 2)
+			document.getElementById('hours').innerText = PrefixInteger(hours, 2)
+			document.getElementById('minutes').innerText = PrefixInteger(minutes, 2)
+			document.getElementById('seconds').innerText = PrefixInteger(seconds, 2)
+		}
+	</script>
+
+	<!-- 樱花飘落背景 -->
+	<script src="./js/Sakura.js"></script>
+
+	<!-- 鼠标点击出现烟花波纹 -->
+	<script src="./js/clickEffect.js"></script>
 </html>
