@@ -262,6 +262,7 @@
 		}
 
 		function isWorkDay(date) {
+			date = new Date(date) // 深拷贝一下，否则影响原始数据
 			date.setHours(0)
 			date.setMinutes(0)
 			date.setSeconds(0)
